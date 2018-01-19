@@ -1,16 +1,14 @@
-import { GET_CATEGORIES } from '../actions'
+import { GET_CATEGORIES } from '../actions/categories'
 
-const categories = (state = {}, action) => {
-    const { type, categories } = action
+const categoriesReducer = (state = [], action) => {
+    const { type } = action
     switch(type) {
         case GET_CATEGORIES:
-            return {
-                ...state,
-                categories
-            }
+            const { categories } = action
+            return categories
         default:
             return state
     }
 }
 
-export default categories
+export default categoriesReducer
