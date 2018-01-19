@@ -4,26 +4,24 @@ import { ListGroupItem, Badge, Row, Col, Label, Button, ButtonGroup } from 'reac
 import { Link } from 'react-router-dom'
 import { TiThumbsUp, TiThumbsDown, TiDelete, TiEdit } from 'react-icons/lib/ti';
 
-import { upVotePost, downVotePost } from '../actions/posts'
+import { upVotePost, downVotePost, deletePost } from '../actions/posts'
 
-class PostListDetail extends Component {
+class PostDetail extends Component {
     render() {
         const { post } = this.props
         return (
             <ListGroupItem>
                 <ButtonGroup className="pull-right comment-actions">
-                    <Button bsStyle="success">
-                        <Link to={`/${post.category}/edit/${post.id}`}>
-                            <TiEdit />
-                        </Link>
-                    </Button>
+                    <Link to={`/${post.category}/edit/${post.id}`} className="btn btn-success">
+                        <TiEdit />
+                    </Link>
                     <Button bsStyle="danger">
-                        <TiDelete />
+                        <TiDelete onClick={() => this.props.deletePost(post.id)}/>
                     </Button>
                 </ButtonGroup>
                 <h2>
                     <Link
-                        to={`${post.category}/${post.id}`}
+                        to={`/${post.category}/${post.id}`}
                         style={{ textDecoration: 'none' }}
                     >
                         {post.title}
@@ -59,7 +57,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         upVotePost: (postId) => upVotePost(postId)(dispatch),
         downVotePost: (postId) => downVotePost(postId)(dispatch),
+        deletePost: (postId) => deletePost(postId)(dispatch)
     }
 }
 
-export default connect(null, mapDispatchToProps)(PostListDetail);
+export default connect(null, mapDispatchToProps)(PostDetail);

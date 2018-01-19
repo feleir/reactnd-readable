@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { ListGroup, Row, DropdownButton, MenuItem } from 'react-bootstrap'
+import { ListGroup, Row, DropdownButton, MenuItem, Button } from 'react-bootstrap'
 import sortBy from 'sort-by'
-import PostListDetail from './PostListDetail'
+import PostDetail from './PostDetail'
+
 import { getPosts } from '../actions/posts'
 import { sortPostsByKey } from '../actions/sort'
+import { Link } from 'react-router-dom';
 
 const sortByOptions = [
     { key: 'timestamp', description: "By Date" },
@@ -36,6 +38,9 @@ class PostList extends Component {
         return (
             <div>
                 <Row className="dropdown-row">
+                    <Button className="pull-left">
+                        <Link to='/posts/new' style={{ textDecoration: 'none' }}>Create new post</Link>
+                    </Button>
                     <DropdownButton
                         title={selectedSortDescription}
                         id="sort-posts"
@@ -50,7 +55,7 @@ class PostList extends Component {
                 <Row>
                     <ListGroup>
                         {posts.map(post => (
-                            <PostListDetail post={post} key={post.id} />
+                            <PostDetail post={post} key={post.id} />
                         ))}
                     </ListGroup>
                 </Row>
@@ -60,7 +65,6 @@ class PostList extends Component {
 }
 
 const mapStatetoProps = ({ posts, sort }) => {
-    console.log(posts)
     return {
         posts: Object.values(posts),
         sortedBy: sort['posts']
