@@ -17,15 +17,15 @@ class PostDetail extends Component {
                     <Button bsStyle={post.voteScore < 0 ? "danger": "success"}>
                         {post.voteScore}
                     </Button>
-                    <UpVoteButton onUpvote={() => this.props.upVotePost(post.id)} />
-                    <Downvotebutton onDownvote={() => this.props.downVotePost(post.id)} />
+                    <UpVoteButton onUpvote={() => this.props.upVotePost(post.id)} id={post.id}/>
+                    <Downvotebutton onDownvote={() => this.props.downVotePost(post.id)} id={post.id}/>
                 </ButtonGroup>
                 <ButtonGroup className="pull-right comment-actions">
                     <Link to={`/${post.category}/edit/${post.id}`} className="btn btn-success">
                         <TiEdit />
                     </Link>
-                    <Button bsStyle="danger">
-                        <TiDelete onClick={() => this.props.deletePost(post.id)}/>
+                    <Button bsStyle="danger" onClick={() => this.props.deletePost(post.id)}>
+                        <TiDelete />
                     </Button>
                 </ButtonGroup>
                 <Clearfix />

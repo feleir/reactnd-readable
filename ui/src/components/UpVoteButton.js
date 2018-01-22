@@ -5,7 +5,7 @@ import { TiThumbsUp } from 'react-icons/lib/ti';
 const UpVoteButton = (props) => {
     return (
         <OverlayTrigger
-			overlay={<Tooltip>Up vote</Tooltip>}
+			overlay={<Tooltip id={`upvote-${props.id}`}>Up vote</Tooltip>}
 			placement="top"
 			delayShow={300}
 			delayHide={150}

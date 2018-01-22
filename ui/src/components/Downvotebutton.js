@@ -5,7 +5,7 @@ import { TiThumbsDown } from 'react-icons/lib/ti';
 const DownvoteButton = (props) => {
     return (
         <OverlayTrigger
-			overlay={<Tooltip>Down vote</Tooltip>}
+			overlay={<Tooltip id={`downvote-${props.id}`}>Down vote</Tooltip>}
 			placement="top"
 			delayShow={300}
 			delayHide={150}

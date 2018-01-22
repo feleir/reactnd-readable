@@ -1,7 +1,12 @@
 import { guid } from './helpers'
 
-const url = process.env.API_URL
-const authorization = process.env.API_AUTHENTICATION_KEY
+const url = process.env.REACT_APP_API_URL
+const authorization = process.env.REACT_APP_API_AUTHENTICATION_KEY
+const headers = { 
+    'Authorization': authorization,
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+ }
 
 const POST_TYPE = 'posts'
 const COMMENT_TYPE = 'comments'
@@ -9,11 +14,7 @@ const COMMENT_TYPE = 'comments'
 const vote = (type, id, option) => {
     const postUrl = `${url}/${type}/${id}`
     return fetch(postUrl, { method: 'POST' , 
-            headers: { 
-                'Authorization': authorization,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-             },
+            headers,
             body: JSON.stringify({
                 option: option
             })
@@ -25,11 +26,7 @@ const update = (type, postId, values) => {
     return fetch(`${url}/${type}/${postId}`, 
         { 
             method: 'PUT' , 
-            headers: { 
-                'Authorization': authorization,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-             },
+            headers,
             body: JSON.stringify(values)
         })
         .then(response => response.json())
@@ -37,11 +34,7 @@ const update = (type, postId, values) => {
 
 const create = (type, values)  => {
     return fetch(`${url}/${type}`, { method: 'POST' , 
-            headers: { 
-                'Authorization': authorization,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-             },
+            headers,
             body: JSON.stringify(values)
         })
         .then(response => response.json())
@@ -51,26 +44,24 @@ const remove = (type, id) => {
     return fetch(`${url}/${type}/${id}`, 
         { 
             method: 'DELETE',
-            headers: {
-                'Authorization': authorization
-            }
+            headers
         })
 }
 
 export function fetchCategories() {
-    return fetch(`${url}/categories`, { headers: { 'Authorization': authorization }})
+    return fetch(`${url}/categories`, { headers })
         .then(response => response.json())
 }
 
 export function fetchPosts(category) {
     const getUrl = category ? `${url}/${category}/posts` : `${url}/posts`;
-    return fetch(getUrl, { headers: { 'Authorization': authorization }})
+    return fetch(getUrl, { headers })
         .then(response => response.json())
 }
 
 export function fetchPost(postId) {
     const getUrl = `${url}/posts/${postId}`;
-    return fetch(getUrl, { headers: { 'Authorization': authorization }})
+    return fetch(getUrl, { headers })
         .then(response => response.json())
 }
 
@@ -107,11 +98,7 @@ export function postUpdate(postId, values) {
 export function fetchPostComments(postId) {
     return fetch(`${url}/posts/${postId}/comments`,
             {
-                headers: {
-                    'Authorization': authorization,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+                headers
             })
         .then(response => response.json());
 }
@@ -131,7 +118,7 @@ export function commentCreate(values) {
 
 export function fetchComment(commentId) {
     const getUrl = `${url}/comments/${commentId}`;
-    return fetch(getUrl, { headers: { 'Authorization': authorization }})
+    return fetch(getUrl, { headers })
         .then(response => response.json())
 }
 

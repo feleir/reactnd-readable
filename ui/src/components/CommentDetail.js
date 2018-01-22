@@ -19,15 +19,15 @@ class CommentDetail extends Component {
                     <Button bsStyle={comment.voteScore < 0 ? "danger": "success"}>
                         {comment.voteScore}
                     </Button>
-                    <UpVoteButton onUpvote={() => this.props.upVoteComment(comment.id)} />
-                    <Downvotebutton onDownvote={() => this.props.downVoteComment(comment.id)} />
+                    <UpVoteButton onUpvote={() => this.props.upVoteComment(comment.id)} id={comment.id}/>
+                    <Downvotebutton onDownvote={() => this.props.downVoteComment(comment.id)} id={comment.id}/>
                 </ButtonGroup>
                 <ButtonGroup className="pull-right comment-actions">
                     <Link to={`/${category}/${postId}/comments/edit/${comment.id}`} className="btn btn-success">
                         <TiEdit />
                     </Link>
-                    <Button bsStyle="danger">
-                        <TiDelete onClick={() => this.props.deleteComment(comment.id)}/>
+                    <Button bsStyle="danger" onClick={() => this.props.deleteComment(comment.id)}>
+                        <TiDelete />
                     </Button>
                 </ButtonGroup>
                 <Clearfix />
