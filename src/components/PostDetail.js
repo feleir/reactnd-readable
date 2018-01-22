@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { ListGroupItem, Badge, Row, Col, Label, Button, ButtonGroup } from 'react-bootstrap'
+import { Badge, Row, Col, Label, Button, ButtonGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { TiThumbsUp, TiThumbsDown, TiDelete, TiEdit } from 'react-icons/lib/ti';
 
@@ -10,7 +10,7 @@ class PostDetail extends Component {
     render() {
         const { post } = this.props
         return (
-            <ListGroupItem>
+            <div>
                 <ButtonGroup className="pull-right comment-actions">
                     <Link to={`/${post.category}/edit/${post.id}`} className="btn btn-success">
                         <TiEdit />
@@ -42,13 +42,13 @@ class PostDetail extends Component {
                             <Button onClick={() => this.props.upVotePost(post.id)}>
                                 <TiThumbsUp/>
                             </Button>
-                            <Button>
-                                <TiThumbsDown onClick={() => this.props.downVotePost(post.id)}/>
+                            <Button onClick={() => this.props.downVotePost(post.id)}>
+                                <TiThumbsDown />
                             </Button>
                         </Col>
                     </Col>
                 </Row>                    
-            </ListGroupItem>
+            </div>
         )
     }
 }

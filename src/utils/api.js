@@ -1,28 +1,16 @@
 import { guid } from './helpers'
+
 const url = 'http://localhost:3001'
+const authorization = 'testAuthorization'
 
-export function fetchCategories() {
-    return fetch(`${url}/categories`, { headers: { 'Authorization': 'whatever-you-want' }})
-        .then(response => response.json())
-}
+const POST_TYPE = 'posts'
+const COMMENT_TYPE = 'comments'
 
-export function fetchPosts(category) {
-    const getUrl = category ? `${url}/${category}/posts` : `${url}/posts`;
-    return fetch(getUrl, { headers: { 'Authorization': 'whatever-you-want' }})
-        .then(response => response.json())
-}
-
-export function fetchPost(postId) {
-    const getUrl = `${url}/posts/${postId}`;
-    return fetch(getUrl, { headers: { 'Authorization': 'whatever-you-want' }})
-        .then(response => response.json())
-}
-
-const votePost = (postId, option) => {
-    const postUrl = `${url}/posts/${postId}`
+const vote = (type, id, option) => {
+    const postUrl = `${url}/${type}/${id}`
     return fetch(postUrl, { method: 'POST' , 
             headers: { 
-                'Authorization': 'whatever-you-want',
+                'Authorization': authorization,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
              },
@@ -33,28 +21,73 @@ const votePost = (postId, option) => {
         .then(response => response.json())
 }
 
-export function postUpvote(postId) {
-    return votePost(postId, 'upVote');
+const update = (type, postId, values) => {
+    return fetch(`${url}/${type}/${postId}`, 
+        { 
+            method: 'PUT' , 
+            headers: { 
+                'Authorization': authorization,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+             },
+            body: JSON.stringify(values)
+        })
+        .then(response => response.json())
 }
 
-export function postDownvote(postId) {
-    return votePost(postId, 'downVote');
+const create = (type, values)  => {
+    return fetch(`${url}/${type}`, { method: 'POST' , 
+            headers: { 
+                'Authorization': authorization,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+             },
+            body: JSON.stringify(values)
+        })
+        .then(response => response.json())
 }
 
-export function postDelete(postId) {
-    const delUrl = `${url}/posts/${postId}`
-    return fetch(delUrl, 
+const remove = (type, id) => {
+    return fetch(`${url}/${type}/${id}`, 
         { 
             method: 'DELETE',
             headers: {
-                'Authorization': 'whatever-you-want'
+                'Authorization': authorization
             }
         })
 }
 
+export function fetchCategories() {
+    return fetch(`${url}/categories`, { headers: { 'Authorization': authorization }})
+        .then(response => response.json())
+}
+
+export function fetchPosts(category) {
+    const getUrl = category ? `${url}/${category}/posts` : `${url}/posts`;
+    return fetch(getUrl, { headers: { 'Authorization': authorization }})
+        .then(response => response.json())
+}
+
+export function fetchPost(postId) {
+    const getUrl = `${url}/posts/${postId}`;
+    return fetch(getUrl, { headers: { 'Authorization': authorization }})
+        .then(response => response.json())
+}
+
+export function postUpvote(postId) {
+    return vote(POST_TYPE, postId, 'upVote');
+}
+
+export function postDownvote(postId) {
+    return vote(POST_TYPE, postId, 'downVote');
+}
+
+export function postDelete(postId) {
+    return remove(POST_TYPE, postId)
+}
+
 export function postCreate(values) {
-    const { title, body, author, category } = values;
-    const postUrl = `${url}/posts/`
+    const { title, body, author, category } = values
     const data = {
         id: guid(),
         timestamp: Date.now(),
@@ -63,36 +96,57 @@ export function postCreate(values) {
         author,
         category
     }
-
-    return fetch(postUrl, { method: 'POST' , 
-            headers: { 
-                'Authorization': 'whatever-you-want',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-             },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
+    
+    return create(POST_TYPE, data)
 }
 
 export function postUpdate(postId, values) {
-    const { title, body } = values;
-    const putUrl = `${url}/posts/${postId}`
+    return update(POST_TYPE, postId, values)
+}
+
+export function fetchPostComments(postId) {
+    return fetch(`${url}/posts/${postId}/comments`,
+            {
+                headers: {
+                    'Authorization': authorization,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+        .then(response => response.json());
+}
+
+export function commentCreate(values) {
+    const {  body, author, parentId } = values
     const data = {
-        title,
-        body
+        id: guid(),
+        timestamp: Date.now(),
+        body,
+        author,
+        parentId
     }
 
-    return fetch(putUrl, 
-        { 
-            method: 'PUT' , 
-            headers: { 
-                'Authorization': 'whatever-you-want',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-             },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
+    return create(COMMENT_TYPE, data)
+}
 
+export function fetchComment(commentId) {
+    const getUrl = `${url}/comments/${commentId}`;
+    return fetch(getUrl, { headers: { 'Authorization': authorization }})
+        .then(response => response.json())
+}
+
+export function commentUpVote(postId) {
+    return vote(COMMENT_TYPE, postId, 'upVote');
+}
+
+export function commentDownVote(postId) {
+    return vote(COMMENT_TYPE, postId, 'downVote');
+}
+
+export function commentUpdate(commentId, values) {
+    return update(COMMENT_TYPE, commentId, values)
+}
+
+export function commentDelete(commentId) {
+    return remove(COMMENT_TYPE, commentId)
 }

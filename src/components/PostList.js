@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { ListGroup, Row, DropdownButton, MenuItem, Button } from 'react-bootstrap'
+import { ListGroup, ListGroupItem, Row, DropdownButton, MenuItem, Button } from 'react-bootstrap'
 import sortBy from 'sort-by'
 import PostDetail from './PostDetail'
 
@@ -55,7 +55,9 @@ class PostList extends Component {
                 <Row>
                     <ListGroup>
                         {posts.map(post => (
-                            <PostDetail post={post} key={post.id} />
+                            <ListGroupItem key={post.id}>
+                                <PostDetail post={post} />
+                            </ListGroupItem>
                         ))}
                     </ListGroup>
                 </Row>
