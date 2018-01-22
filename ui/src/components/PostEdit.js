@@ -4,7 +4,6 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import {
     FormGroup,
-    FormControl,
     Button
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
@@ -14,7 +13,7 @@ import {
     updatePost 
 } from '../actions/posts'
 import { getCategories } from '../actions/categories'
-import { capitalize } from '../utils/helpers'
+import { capitalize, renderField } from '../utils/helpers'
 
 
 class PostEdit extends Component {
@@ -35,24 +34,6 @@ class PostEdit extends Component {
             this.initialized = true;
             this.props.initialize(newProps.post)
         }
-    }
-    
-    renderField(field) {
-        const { meta: { touched, error } } = field;
-        const className = touched && error ? 'error': null;
-        
-        return (
-            <FormGroup validationState={className}>
-                <label>{field.label}</label>
-                <FormControl
-                    type="text"
-                    {...field.input}
-                />
-                <div className="text-help">
-                    {touched ? error : ''}
-                </div>
-            </FormGroup>
-        );
     }
     
     renderCategoryFields(field) {
@@ -98,19 +79,19 @@ class PostEdit extends Component {
                 <Field
                     label="Title:"
                     name="title"
-                    component={this.renderField}
+                    component={renderField}
                 />
                 <Field
                     label="Content:"
                     name="body"
-                    component={this.renderField}
+                    component={renderField}
                 />
                 {
                     !this.props.post && 
                     (<Field
                         label="Author:"
                         name="author"
-                        component={this.renderField}
+                        component={renderField}
                     />)
                 }
                 {
@@ -133,19 +114,19 @@ function validate(values) {
     const errors = {};
     
     if (!values.title) {
-        errors.title = "Enter a title!"
+        errors.title = "Title is required."
     }
     
     if (!values.author) {
-        errors.author = "Enter a name!"
+        errors.author = "Author is required."
     }
     
     if (!values.body) {
-        errors.body = "Enter some content!"
+        errors.body = "Content is required."
     }
     
     if (!values.category) {
-        errors.category = "Select some content!"
+        errors.category = "Category is required."
     }
     
     return errors;

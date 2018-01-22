@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
-import {
-    FormGroup,
-    FormControl,
-    Button
-} from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { 
     createComment, 
     getComment, 
     updateComment 
 } from '../actions/comments'
-
+import { renderField } from '../utils/helpers'
 
 class CommentEdit extends Component {
     constructor(props) {
@@ -31,24 +27,6 @@ class CommentEdit extends Component {
             this.initialized = true;
             this.props.initialize(newProps.comment)
         }
-    }
-    
-    renderField(field) {
-        const { meta: { touched, error } } = field;
-        const className = touched && error ? 'error': null;
-        
-        return (
-            <FormGroup validationState={className}>
-                <label>{field.label}</label>
-                <FormControl
-                    type="text"
-                    {...field.input}
-                />
-                <div className="text-help">
-                    {touched ? error : ''}
-                </div>
-            </FormGroup>
-        );
     }
     
     onSubmit(values) {
@@ -74,14 +52,14 @@ class CommentEdit extends Component {
                 <Field
                     label="Content:"
                     name="body"
-                    component={this.renderField}
+                    component={renderField}
                 />
                 {
                     !this.props.comment && 
                     (<Field
                         label="Author:"
                         name="author"
-                        component={this.renderField}
+                        component={renderField}
                     />)
                 }
                 <Button type="submit" bsStyle="primary">Submit</Button>
@@ -96,11 +74,11 @@ function validate(values) {
     const errors = {};
     
     if (!values.author) {
-        errors.author = "Enter a name!"
+        errors.author = "Author is required."
     }
     
     if (!values.body) {
-        errors.body = "Enter some content!"
+        errors.body = "Content is required."
     }
     
     return errors;

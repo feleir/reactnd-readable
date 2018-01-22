@@ -30,10 +30,7 @@ class PostList extends Component {
     render() {
         const selectedSortBy = sortByOptions[this.props.sortedBy || 0];
         const { key, description, order } = selectedSortBy
-        let posts = this.props.posts.sort(sortBy(key))
-        if (order === SORT_BY_DESCENDING) {
-            posts = posts.reverse()
-        }
+        const posts = this.props.posts.sort(sortBy(`${order === SORT_BY_DESCENDING ? '-' : ''}${key}`))
 
         return (
             <div>
