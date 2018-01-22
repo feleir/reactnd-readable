@@ -9,6 +9,8 @@ import { getPosts } from '../actions/posts'
 import { sortPostsByKey } from '../actions/sort'
 import { Link } from 'react-router-dom';
 
+import { capitalize } from '../utils/helpers'
+
 const sortByOptions = [
     { key: 'timestamp', description: "By Date" },
     { key: 'voteScore', description: "By score" }
@@ -37,6 +39,10 @@ class PostList extends Component {
 
         return (
             <div>
+                {this.props.category && (
+                    <h2 className='text-center'>{capitalize(this.props.category)}</h2>
+                    )
+                }
                 <Row className="dropdown-row">
                     <Button className="pull-left">
                         <Link to='/posts/new' style={{ textDecoration: 'none' }}>Create new post</Link>

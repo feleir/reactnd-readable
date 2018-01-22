@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Label, Button, ButtonGroup, Clearfix } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { TiThumbsUp, TiThumbsDown, TiDelete, TiEdit } from 'react-icons/lib/ti';
+import UpVoteButton from './UpVoteButton'
+import Downvotebutton from './Downvotebutton'
+import { TiDelete, TiEdit } from 'react-icons/lib/ti';
 
 import { upVotePost, downVotePost, deletePost } from '../actions/posts'
 
@@ -15,13 +17,8 @@ class PostDetail extends Component {
                     <Button bsStyle={post.voteScore < 0 ? "danger": "success"}>
                         {post.voteScore}
                     </Button>
-                    <Button onClick={() => this.props.upVotePost(post.id)}>
-                        <TiThumbsUp/>
-                    </Button>
-
-                    <Button onClick={() => this.props.downVotePost(post.id)}>
-                        <TiThumbsDown />
-                    </Button>
+                    <UpVoteButton onUpvote={() => this.props.upVotePost(post.id)} />
+                    <Downvotebutton onDownvote={() => this.props.downVotePost(post.id)} />
                 </ButtonGroup>
                 <ButtonGroup className="pull-right comment-actions">
                     <Link to={`/${post.category}/edit/${post.id}`} className="btn btn-success">
