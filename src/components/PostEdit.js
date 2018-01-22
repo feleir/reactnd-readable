@@ -17,7 +17,7 @@ import { getCategories } from '../actions/categories'
 import { capitalize } from '../utils/helpers'
 
 
-class PostsNew extends Component {
+class PostEdit extends Component {
     constructor(props) {
         super(props)
         this.initialized = false;
@@ -171,5 +171,5 @@ export default reduxForm({
     validate,
     form: 'CreatePostForm'
 })(
-    connect(mapStateToProps, mapDispatchToProps)(PostsNew)
+    connect(mapStateToProps, mapDispatchToProps)(PostEdit)
 )

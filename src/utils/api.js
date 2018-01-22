@@ -144,7 +144,13 @@ export function commentDownVote(postId) {
 }
 
 export function commentUpdate(commentId, values) {
-    return update(COMMENT_TYPE, commentId, values)
+    const {  body } = values
+    const data = {
+        timestamp: Date.now(),
+        body
+    }
+
+    return update(COMMENT_TYPE, commentId, data)
 }
 
 export function commentDelete(commentId) {

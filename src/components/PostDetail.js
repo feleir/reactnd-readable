@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Badge, Row, Col, Label, Button, ButtonGroup } from 'react-bootstrap'
+import { Label, Button, ButtonGroup, Clearfix } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { TiThumbsUp, TiThumbsDown, TiDelete, TiEdit } from 'react-icons/lib/ti';
 
@@ -11,6 +11,18 @@ class PostDetail extends Component {
         const { post } = this.props
         return (
             <div>
+                <ButtonGroup className="pull-left comment-actions">
+                    <Button bsStyle={post.voteScore < 0 ? "danger": "success"}>
+                        {post.voteScore}
+                    </Button>
+                    <Button onClick={() => this.props.upVotePost(post.id)}>
+                        <TiThumbsUp/>
+                    </Button>
+
+                    <Button onClick={() => this.props.downVotePost(post.id)}>
+                        <TiThumbsDown />
+                    </Button>
+                </ButtonGroup>
                 <ButtonGroup className="pull-right comment-actions">
                     <Link to={`/${post.category}/edit/${post.id}`} className="btn btn-success">
                         <TiEdit />
@@ -19,6 +31,7 @@ class PostDetail extends Component {
                         <TiDelete onClick={() => this.props.deletePost(post.id)}/>
                     </Button>
                 </ButtonGroup>
+                <Clearfix />
                 <h2>
                     <Link
                         to={`/${post.category}/${post.id}`}
@@ -27,27 +40,11 @@ class PostDetail extends Component {
                         {post.title}
                     </Link>
                     <br/>
-                    <small>Posted by {post.author}</small>
+                    <small>Posted by {post.author} on {new Date(post.timestamp).toLocaleString()}</small>
                 </h2>
                 <p>{post.body}</p>
-                <Row>
-                    <Col md={12}>
-                        <Col md={8} className="text-left">
-                            <Badge>{new Date(post.timestamp).toLocaleString()}</Badge>
-                            <h4><Label bsStyle="primary">{post.category}</Label></h4>
-                            {post.commentCount ? post.commentCount : 0 } comments
-                        </Col>
-                        <Col md={4} className="text-right">
-                            <h3><Label bsStyle={post.voteScore < 0 ? "danger": "success"}>{post.voteScore}</Label></h3>
-                            <Button onClick={() => this.props.upVotePost(post.id)}>
-                                <TiThumbsUp/>
-                            </Button>
-                            <Button onClick={() => this.props.downVotePost(post.id)}>
-                                <TiThumbsDown />
-                            </Button>
-                        </Col>
-                    </Col>
-                </Row>                    
+                <h4><Label bsStyle="primary">{post.category}</Label></h4>
+                {post.commentCount ? post.commentCount : 0 } comments
             </div>
         )
     }

@@ -24,8 +24,9 @@ class FullPostDetail extends Component {
                     )
                 }
                 {this.props.comments && 
+                 this.props.post &&
                     (
-                        <CommentsList comments={this.props.comments} />
+                        <CommentsList comments={this.props.comments} postId={this.props.post.id} category={this.props.post.category} />
                     )
                 }
             </div>
