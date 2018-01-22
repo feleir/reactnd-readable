@@ -1,7 +1,7 @@
 import { guid } from './helpers'
 
-const url = 'http://localhost:3001'
-const authorization = 'testAuthorization'
+const url = process.env.API_URL
+const authorization = process.env.API_AUTHENTICATION_KEY
 
 const POST_TYPE = 'posts'
 const COMMENT_TYPE = 'comments'
