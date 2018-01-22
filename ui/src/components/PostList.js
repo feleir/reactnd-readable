@@ -6,15 +6,10 @@ import sortBy from 'sort-by'
 import PostDetail from './PostDetail'
 
 import { getPosts } from '../actions/posts'
-import { sortPostsByKey } from '../actions/sort'
+import { sortPostsByKey, sortByOptions, SORT_BY_DESCENDING } from '../actions/sort'
 import { Link } from 'react-router-dom';
 
 import { capitalize } from '../utils/helpers'
-
-const sortByOptions = [
-    { key: 'timestamp', description: "By Date" },
-    { key: 'voteScore', description: "By score" }
-]
 
 class PostList extends Component {
     componentWillMount() {
@@ -33,9 +28,12 @@ class PostList extends Component {
 
     
     render() {
-        const selectedSortBy = this.props.sortedBy || 0;
-        const selectedSortDescription = sortByOptions[selectedSortBy].description;
-        const posts = this.props.posts.sort(sortBy(sortByOptions[selectedSortBy].key)).reverse()
+        const selectedSortBy = sortByOptions[this.props.sortedBy || 0];
+        const { key, description, order } = selectedSortBy
+        let posts = this.props.posts.sort(sortBy(key))
+        if (order === SORT_BY_DESCENDING) {
+            posts = posts.reverse()
+        }
 
         return (
             <div>
@@ -48,7 +46,7 @@ class PostList extends Component {
                         <Link to='/posts/new' style={{ textDecoration: 'none' }}>Create new post</Link>
                     </Button>
                     <DropdownButton
-                        title={selectedSortDescription}
+                        title={description}
                         id="sort-posts"
                     >
                         {sortByOptions.map((option, index) => (
