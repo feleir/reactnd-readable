@@ -9,6 +9,7 @@ import {
     updateComment 
 } from '../actions/comments'
 import { renderField } from '../utils/helpers'
+import NotFound from './NotFound'
 
 class CommentEdit extends Component {
     constructor(props) {
@@ -48,23 +49,28 @@ class CommentEdit extends Component {
         const { handleSubmit } = this.props;
         return (
             <div className="container">
-                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                <Field
-                    label="Content:"
-                    name="body"
-                    component={renderField}
-                />
-                {
-                    !this.props.comment && 
-                    (<Field
-                        label="Author:"
-                        name="author"
-                        component={renderField}
-                    />)
+                {this.props.comment == null && <NotFound type='comment'/>}
+                {this.props.comment != null && 
+                    (
+                        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                            <Field
+                                label="Content:"
+                                name="body"
+                                component={renderField}
+                            />
+                            {
+                                !this.props.comment && 
+                                (<Field
+                                    label="Author:"
+                                    name="author"
+                                    component={renderField}
+                                />)
+                            }
+                            <Button type="submit" bsStyle="primary">Submit</Button>
+                            <Link to="/" className="btn btn-danger">Cancel</Link>
+                        </form>
+                    )
                 }
-                <Button type="submit" bsStyle="primary">Submit</Button>
-                <Link to="/" className="btn btn-danger">Cancel</Link>
-                </form>
             </div>
         );
     }

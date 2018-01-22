@@ -6,6 +6,8 @@ import CommentsList from './CommentsList'
 import { getPost } from '../actions/posts'
 import { getPostComments } from '../actions/comments'
 import sortBy from 'sort-by'
+import NotFound from './NotFound'
+
 class FullPostDetail extends Component {
     componentWillMount() {
         const { postId } = this.props
@@ -17,9 +19,9 @@ class FullPostDetail extends Component {
 
     render() {
         const comments = (this.props.comments || []).sort(sortBy('-timestamp'))
-
         return (
             <div className="container">
+                {this.props.post == null && <NotFound type='post'/>}
                 {this.props.post && 
                     (
                         <PostDetail post={this.props.post}/>

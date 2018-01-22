@@ -6,11 +6,14 @@ import {
     CREATE_POST, 
     DELETE_POST, 
     GET_POST,
-    UPDATE_POST
+    UPDATE_POST,
+    POST_ERROR
 } from '../actions/posts'
 
 const postsReducer = (state = {}, action) => {
     const { type } = action
+    const { postId } = action
+
     switch(type) {
         case GET_POSTS:
             const { posts } = action
@@ -26,8 +29,12 @@ const postsReducer = (state = {}, action) => {
                 [post.id]: post
             }
         case DELETE_POST:
-            const { postId } = action
             return _.omit(state, postId)
+        case POST_ERROR:
+            return {
+                ...state,
+                [postId]: null
+            }        
         default:
             return state
     }

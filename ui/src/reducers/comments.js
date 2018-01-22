@@ -6,12 +6,14 @@ import {
     DOWNVOTE_COMMENT,
     CREATE_COMMENT,
     UPDATE_COMMENT,
-    DELETE_COMMENT
-
+    DELETE_COMMENT,
+    COMMENT_ERROR
 } from '../actions/comments'
 
 const commentsReducer = (state = {}, action) => {
     const { type } = action
+    const { commentId } = action
+
     switch(type) {
         case GET_POST_COMMENTS:
             const { comments } = action
@@ -27,8 +29,12 @@ const commentsReducer = (state = {}, action) => {
                 [comment.id]: comment
             }
         case DELETE_COMMENT:
-            const { commentId } = action
             return _.omit(state, commentId)
+        case COMMENT_ERROR:
+            return {
+                ...state,
+                [commentId]: null
+            }      
         default:
            return state
     }

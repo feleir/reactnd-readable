@@ -15,6 +15,7 @@ export const DOWNVOTE_POST = 'DOWNVOTE_POST'
 export const CREATE_POST = 'CREATE_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const UPDATE_POST = 'UPDATE_POST'
+export const POST_ERROR = 'POST_ERROR'
 
 export function getPosts(category) {
     return dispatch => {
@@ -32,10 +33,17 @@ export function getPost(postId) {
     return dispatch => {
         fetchPost(postId)
         .then(response => {
-            dispatch({
-                type: GET_POST,
-                post: response
-            })
+            if (response.error) {
+                dispatch({ 
+                    type: POST_ERROR,
+                    postId
+                })
+            } else {
+                dispatch({
+                    type: GET_POST,
+                    post: response
+                })
+            }
         })
     }
 }

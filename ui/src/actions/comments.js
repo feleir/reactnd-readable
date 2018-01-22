@@ -15,6 +15,7 @@ export const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT'
 export const CREATE_COMMENT = 'CREATE_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const UPDATE_COMMENT = 'UPDATE_COMMENT'
+export const COMMENT_ERROR = 'COMMENT_ERROR'
 
 export function getPostComments(postId) {
     return dispatch => {
@@ -33,10 +34,17 @@ export function getComment(commentId) {
     return dispatch => {
         fetchComment(commentId)
         .then(response => {
-            dispatch({
-                type: GET_COMMENT,
-                comment: response
-            })
+            if (response.error) {
+                dispatch({ 
+                    type: COMMENT_ERROR,
+                    commentId
+                })
+            } else {
+                dispatch({
+                    type: GET_COMMENT,
+                    comment: response
+                })
+            }
         })
     }
 }
