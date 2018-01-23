@@ -12,7 +12,7 @@ React front-end can be found in the ui folder
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
-To configure the connection to the backend server just update the .env folder with the appropiate values.
+To configure the connection to the backend server just update the .env folder with the appropiate values, by default the backend server runs in http://localhost:3001
 
 ## Components
 
