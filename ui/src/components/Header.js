@@ -3,6 +3,7 @@ import { Navbar, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { capitalize } from '../utils/helpers'
 import { getCategories } from '../actions/categories'
+import { bindActionCreators } from 'redux'
 
 class Header extends Component {
     componentWillMount() {
@@ -55,10 +56,6 @@ const mapStatetoProps = ({ categories }) => {
         categories: categories || [],
     }
 }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getCategories: () => getCategories(dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getCategories }, dispatch)
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Header);

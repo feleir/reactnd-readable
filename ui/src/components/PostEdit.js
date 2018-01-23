@@ -7,6 +7,7 @@ import {
     Button
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { 
     createPost, 
     getPost, 
@@ -139,14 +140,15 @@ function mapStateToProps({ posts, categories }, ownProps) {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getPost, updatePost, createPost, getCategories }, dispatch)
+/* {
     return {
         getPost: (postId) => getPost(postId)(dispatch),
         updatePost: (postId, values) => updatePost(postId, values)(dispatch),
         createPost: (values) => createPost(values)(dispatch),
         getCategories: () => getCategories(dispatch)
     }
-}
+} */
 
 export default reduxForm({
     validate,

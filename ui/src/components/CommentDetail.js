@@ -8,6 +8,7 @@ import Downvotebutton from './Downvotebutton'
 
 import { TiDelete, TiEdit } from 'react-icons/lib/ti';
 
+import { bindActionCreators } from 'redux'
 import { upVoteComment, downVoteComment, deleteComment } from '../actions/comments'
 
 class CommentDetail extends Component {
@@ -40,12 +41,6 @@ class CommentDetail extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        upVoteComment: (commentId) => upVoteComment(commentId)(dispatch),
-        downVoteComment: (commentId) => downVoteComment(commentId)(dispatch),
-        deleteComment: (commentId) => deleteComment(commentId)(dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({ upVoteComment, downVoteComment, deleteComment, dispatch})
 
 export default connect(null, mapDispatchToProps)(CommentDetail);

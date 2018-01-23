@@ -5,6 +5,7 @@ import PostList from './components/PostList'
 import PostEdit from './components/PostEdit'
 import CommentEdit from './components/CommentEdit'
 import FullPostDetail from './components/FullPostDetail'
+import NotFound from './components/NotFound'
 
 import './App.css'
 
@@ -37,7 +38,8 @@ class App extends Component {
                 }
               }
             />
-            <Route 
+            <Route
+              exact
               path="/:category/:postId/comments/edit/:commentId"
               render={(props) => 
                 {
@@ -48,7 +50,8 @@ class App extends Component {
                 }
               }
             />
-            <Route 
+            <Route
+              exact
               path="/:category/edit/:postId"
               render={(props) => 
                 {
@@ -80,6 +83,7 @@ class App extends Component {
                 return <FullPostDetail postId={postId} history={props.history}/>
               }}
             />
+            <Route render={() => <NotFound type="page" />} />
           </Switch>
         </div>
       </div>

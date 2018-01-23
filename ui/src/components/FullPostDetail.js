@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PostDetail from './PostDetail'
 import CommentsList from './CommentsList'
-
-import { getPost } from '../actions/posts'
-import { getPostComments } from '../actions/comments'
-import sortBy from 'sort-by'
 import NotFound from './NotFound'
+
+import sortBy from 'sort-by'
+
+import { bindActionCreators } from 'redux'
+import { getPost, deletePost } from '../actions/posts'
+import { getPostComments } from '../actions/comments'
 
 class FullPostDetail extends Component {
     componentWillMount() {
@@ -24,7 +26,13 @@ class FullPostDetail extends Component {
                 {this.props.post == null && <NotFound type='post'/>}
                 {this.props.post && 
                     (
-                        <PostDetail post={this.props.post}/>
+                        <PostDetail post={this.props.post} onDelete={
+                            (postId) => 
+                            {
+                                this.props.deletePost(postId)
+                                this.props.history.goBack()
+                            }
+                         } />
                     )
                 }
                 {this.props.comments && 
@@ -46,11 +54,6 @@ function mapStateToProps({ posts, comments }, ownProps) {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getPost: (postId) => getPost(postId)(dispatch),
-        getPostComments : (postId) => getPostComments(postId)(dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getPost, deletePost, getPostComments }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(FullPostDetail)

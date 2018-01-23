@@ -6,7 +6,8 @@ import UpVoteButton from './UpVoteButton'
 import Downvotebutton from './Downvotebutton'
 import { TiDelete, TiEdit } from 'react-icons/lib/ti';
 
-import { upVotePost, downVotePost, deletePost } from '../actions/posts'
+import { bindActionCreators } from 'redux'
+import { upVotePost, downVotePost } from '../actions/posts'
 
 class PostDetail extends Component {
     render() {
@@ -24,7 +25,7 @@ class PostDetail extends Component {
                     <Link to={`/${post.category}/edit/${post.id}`} className="btn btn-success">
                         <TiEdit />
                     </Link>
-                    <Button bsStyle="danger" onClick={() => this.props.deletePost(post.id)}>
+                    <Button bsStyle="danger" onClick={() => this.props.onDelete(post.id)}>
                         <TiDelete />
                     </Button>
                 </ButtonGroup>
@@ -47,12 +48,6 @@ class PostDetail extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        upVotePost: (postId) => upVotePost(postId)(dispatch),
-        downVotePost: (postId) => downVotePost(postId)(dispatch),
-        deletePost: (postId) => deletePost(postId)(dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({ upVotePost, downVotePost }, dispatch)
 
 export default connect(null, mapDispatchToProps)(PostDetail);

@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { ListGroup, ListGroupItem, Row, DropdownButton, MenuItem, Button } from 'react-bootstrap'
-import sortBy from 'sort-by'
 import PostDetail from './PostDetail'
-
-import { getPosts } from '../actions/posts'
-import { sortPostsByKey, sortByOptions, SORT_BY_DESCENDING } from '../actions/sort'
 import { Link } from 'react-router-dom';
 
+import { bindActionCreators } from 'redux'
+import { getPosts, deletePost } from '../actions/posts'
+import { sortPostsByKey, sortByOptions, SORT_BY_DESCENDING } from '../actions/sort'
+
+import sortBy from 'sort-by'
 import { capitalize } from '../utils/helpers'
 
 class PostList extends Component {
@@ -57,7 +58,7 @@ class PostList extends Component {
                     <ListGroup>
                         {posts.map(post => (
                             <ListGroupItem key={post.id}>
-                                <PostDetail post={post} />
+                                <PostDetail post={post} onDelete={(postId) => this.props.deletePost(postId) }/>
                             </ListGroupItem>
                         ))}
                     </ListGroup>
@@ -73,11 +74,6 @@ const mapStatetoProps = ({ posts, sort }) => {
         sortedBy: sort['posts']
     }
 }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getPosts: (category) => getPosts(category)(dispatch),
-        sortPostsByKey: (key) => dispatch(sortPostsByKey(key))
-    }
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getPosts, deletePost, sortPostsByKey }, dispatch)
 
 export default connect(mapStatetoProps, mapDispatchToProps)(PostList);

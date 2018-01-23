@@ -8,6 +8,7 @@ import {
     getComment, 
     updateComment 
 } from '../actions/comments'
+import { bindActionCreators } from 'redux'
 import { renderField } from '../utils/helpers'
 import NotFound from './NotFound'
 
@@ -18,6 +19,7 @@ class CommentEdit extends Component {
     }
 
     componentWillMount() {
+        console.log('this.props.commentId', this.props.commentId)
         if (this.props.commentId) {
             this.props.getComment(this.props.commentId)
         }
@@ -47,10 +49,11 @@ class CommentEdit extends Component {
     
     render() {
         const { handleSubmit } = this.props;
+        console.log('this.props.comment', this.props.comment, this.props.comment != null, this.props.comment == null)
         return (
             <div className="container">
-                {this.props.comment == null && <NotFound type='comment'/>}
-                {this.props.comment != null && 
+                {this.props.comment === null && <NotFound type='comment'/>}
+                {this.props.comment !== null && 
                     (
                         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Field
@@ -96,13 +99,7 @@ function mapStateToProps({ comments }, ownProps) {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getComment: (commentId) => getComment(commentId)(dispatch),
-        updateComment: (commentId, values) => updateComment(commentId, values)(dispatch),
-        createComment: (values) => createComment(values)(dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getComment, updateComment, createComment }, dispatch)
 
 export default reduxForm({
     validate,
