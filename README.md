@@ -23,8 +23,6 @@ To configure the connection to the backend server just update the .env folder wi
 * CommentList: Displays a list of comments
 * CommentDetail: Displays the details of a comment
 * CommendEdit: Form to create/update a comment
-* DownvoteButton: Simple button to display the down-vote icon with a tooltip
-* UpVotebutton: Simple button to display the up-vote icon with a tooltip.
 
 ## Actions
 
