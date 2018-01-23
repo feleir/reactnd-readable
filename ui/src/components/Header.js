@@ -1,52 +1,52 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap'
+
+import AppBar from 'material-ui/AppBar'
+import Drawer from 'material-ui/Drawer'
+import MenuItem from 'material-ui/MenuItem'
+
 import { connect } from 'react-redux'
 import { capitalize } from '../utils/helpers'
 import { getCategories } from '../actions/categories'
 import { bindActionCreators } from 'redux'
 
 class Header extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { open: false }
+    }
+
     componentWillMount() {
-        this.props.getCategories();
+        this.props.getCategories()
     }
 
     render() {
         return (
-            <Navbar inverse collapseOnSelect>
-                <Navbar.Header>
-                    <Navbar.Brand>
-                        <a href="#brand">Udacity's React Nanodegree</a>
-                    </Navbar.Brand>
-                    <Navbar.Toggle />
-                    </Navbar.Header>
-                <Navbar.Collapse>
-                    <Nav>
-                        <NavDropdown eventKey={3} title="Categories" id="basic-nav-dropdown">
-                            <MenuItem 
-                                href='/'
-                            >
-                                All
-                            </MenuItem>
-                            {this.props.categories.map(category => (
-                                <MenuItem 
-                                    key={category.name} 
-                                    href={`/${category.path}`}
-                                >
-                                    {capitalize(category.name)}
-                                </MenuItem>
-                            ))}
-                        </NavDropdown>
-                    </Nav>
-                    <Nav pullRight>
-                        <NavItem eventKey={1} href="https://github.com/feleir/reactnd-readable">
-                            Github repository
-                        </NavItem>
-                        <NavItem eventKey={2} href="www.linkedin.com/in/ivan-diaz-fernandez">
-                            By Ivan Diaz
-                        </NavItem>
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
+            <div>
+                <AppBar
+                    title="Udacity's React Nanodegree"
+                    iconClassNameRight="muidocs-icon-navigation-expand-more"
+                    onLeftIconButtonClick={() => this.setState({open: !this.state.open}) }
+                />
+                <Drawer
+                    docked={false}
+                    open={this.state.open}
+                    onRequestChange={(open) => this.setState({ open })}
+                >
+                    <MenuItem 
+                        href='/'
+                    >
+                        All
+                    </MenuItem>
+                    {this.props.categories.map(category => (
+                        <MenuItem 
+                            key={category.name} 
+                            href={`/${category.path}`}
+                        >
+                            {capitalize(category.name)}
+                        </MenuItem>
+                    ))}
+                </Drawer>
+            </div>
         )
     }
 }

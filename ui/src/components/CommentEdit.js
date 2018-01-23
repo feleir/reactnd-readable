@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
-import { Link } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
+
+import RaisedButton from 'material-ui/RaisedButton'
 import { connect } from 'react-redux'
 import { 
     createComment, 
@@ -11,6 +11,10 @@ import {
 import { bindActionCreators } from 'redux'
 import { renderField } from '../utils/helpers'
 import NotFound from './NotFound'
+
+const buttonStyle = {
+    margin: 12,
+}
 
 class CommentEdit extends Component {
     constructor(props) {
@@ -49,7 +53,7 @@ class CommentEdit extends Component {
     
     render() {
         const { handleSubmit } = this.props;
-        console.log('this.props.comment', this.props.comment, this.props.comment != null, this.props.comment == null)
+        
         return (
             <div className="container">
                 {this.props.comment === null && <NotFound type='comment'/>}
@@ -59,6 +63,8 @@ class CommentEdit extends Component {
                             <Field
                                 label="Content:"
                                 name="body"
+                                multiLine={true}
+                                rows={4}
                                 component={renderField}
                             />
                             {
@@ -69,8 +75,10 @@ class CommentEdit extends Component {
                                     component={renderField}
                                 />)
                             }
-                            <Button type="submit" bsStyle="primary">Submit</Button>
-                            <Link to="/" className="btn btn-danger">Cancel</Link>
+                            <div className="form-buttons">
+                                <RaisedButton type="submit" style={buttonStyle}>Submit</RaisedButton>
+                                <RaisedButton href="/" style={buttonStyle}>Cancel</RaisedButton>
+                            </div>
                         </form>
                     )
                 }

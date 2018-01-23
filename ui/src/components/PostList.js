@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { ListGroup, ListGroupItem, Row, DropdownButton, MenuItem, Button } from 'react-bootstrap'
+import MenuItem from 'material-ui/MenuItem'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import RaisedButton from 'material-ui/RaisedButton'
+import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
 import PostDetail from './PostDetail'
-import { Link } from 'react-router-dom';
 
 import { bindActionCreators } from 'redux'
 import { getPosts, deletePost } from '../actions/posts'
@@ -11,6 +13,7 @@ import { sortPostsByKey, sortByOptions, SORT_BY_DESCENDING } from '../actions/so
 
 import sortBy from 'sort-by'
 import { capitalize } from '../utils/helpers'
+import { toolbarStyles } from '../utils/helpers'
 
 class PostList extends Component {
     componentWillMount() {
@@ -30,39 +33,27 @@ class PostList extends Component {
     
     render() {
         const selectedSortBy = sortByOptions[this.props.sortedBy || 0];
-        const { key, description, order } = selectedSortBy
+        const { key, order } = selectedSortBy
         const posts = this.props.posts.sort(sortBy(`${order === SORT_BY_DESCENDING ? '-' : ''}${key}`))
 
         return (
             <div>
-                {this.props.category && (
-                    <h2 className='text-center'>{capitalize(this.props.category)}</h2>
-                    )
-                }
-                <Row className="dropdown-row">
-                    <Button className="pull-left">
-                        <Link to='/posts/new' style={{ textDecoration: 'none' }}>Create new post</Link>
-                    </Button>
-                    <DropdownButton
-                        title={description}
-                        id="sort-posts"
-                    >
-                        {sortByOptions.map((option, index) => (
-                            <MenuItem eventKey={index} key={index} onSelect={value => this.selectedSortByChanged(value)}>
-                                {option.description}
-                            </MenuItem>
-                        ))}
-                    </DropdownButton>
-                </Row>
-                <Row>
-                    <ListGroup>
-                        {posts.map(post => (
-                            <ListGroupItem key={post.id}>
-                                <PostDetail post={post} onDelete={(postId) => this.props.deletePost(postId) }/>
-                            </ListGroupItem>
-                        ))}
-                    </ListGroup>
-                </Row>
+                <Toolbar style={toolbarStyles.toolbar}>
+                    <ToolbarGroup firstChild={true}>
+                        <DropDownMenu value={this.props.sortedBy || 0} onChange={ (event, index, value) => this.selectedSortByChanged(value) }>
+                            {sortByOptions.map((option, index) => (
+                                <MenuItem key={index} value={index} primaryText={option.description} />
+                            ))}
+                        </DropDownMenu>
+                    </ToolbarGroup>
+                    <ToolbarGroup>
+                        <ToolbarTitle text={this.props.category && capitalize(this.props.category)} />
+                        <RaisedButton label="Create New Post" primary={true} href='/posts/new'/>
+                    </ToolbarGroup>
+                </Toolbar>
+                {posts.map(post => (
+                        <PostDetail key={post.id} post={post} onDelete={(postId) => this.props.deletePost(postId) }/>
+                ))}
             </div>
         )
     }

@@ -1,11 +1,11 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+
 import { Field, reduxForm } from 'redux-form'
-import { Link } from 'react-router-dom'
-import {
-    FormGroup,
-    Button
-} from 'react-bootstrap'
+import RaisedButton from 'material-ui/RaisedButton'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { 
@@ -16,6 +16,9 @@ import {
 import { getCategories } from '../actions/categories'
 import { capitalize, renderField } from '../utils/helpers'
 
+const buttonStyle = {
+    margin: 12,
+}
 
 class PostEdit extends Component {
     constructor(props) {
@@ -39,26 +42,23 @@ class PostEdit extends Component {
     
     renderCategoryFields(field) {
         const { categories } = this.props;
-        const { meta: { touched, error } } = field;
-        const className = touched && error ? 'error': null;
+        const { meta: { error } } = field;
+
         return (
-            <FormGroup validationState={className}>
-                <label>{field.label}</label>
-                <select {...field.input} className="form-control">
-                    <option value="" className="disabled">-- Select content</option>
-                    {_.map(categories, category => (
-                        <option
-                            key={category.name}
-                            value={category.name}
-                        >
-                            {capitalize(category.name)}
-                        </option>
-                    ))}
-                </select>
-                <div className="text-help">
-                    {field.meta.touched ? field.meta.error : ''}
-                </div>
-            </FormGroup>
+            <SelectField
+                floatingLabelText={field.label}
+                {...field.input}
+                onChange={(event, index, value) => field.input.onChange(value)}
+                errorText={error}
+                fullWidth={true}
+            >
+                {_.map(categories, category => (
+                    <MenuItem 
+                        key={category.name}
+                        value={category.name} 
+                        primaryText={capitalize(category.name)} />
+                ))}
+            </SelectField>
         );
     }
     
@@ -75,8 +75,7 @@ class PostEdit extends Component {
     render() {
         const { handleSubmit } = this.props;
         return (
-            <div className="container">
-                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field
                     label="Title:"
                     name="title"
@@ -85,6 +84,8 @@ class PostEdit extends Component {
                 <Field
                     label="Content:"
                     name="body"
+                    multiLine={true}
+                    rows={4}
                     component={renderField}
                 />
                 {
@@ -103,10 +104,11 @@ class PostEdit extends Component {
                         component={field => this.renderCategoryFields(field)} 
                         />)
                 }
-                <Button type="submit" bsStyle="primary">Submit</Button>
-                <Link to="/" className="btn btn-danger">Cancel</Link>
-                </form>
-            </div>
+                <div className="form-buttons">
+                    <RaisedButton type="submit" style={buttonStyle}>Submit</RaisedButton>
+                    <RaisedButton href="/" style={buttonStyle}>Cancel</RaisedButton>
+                </div>
+            </form>
         );
     }
 }

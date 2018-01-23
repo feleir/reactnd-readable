@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import PostDetail from './PostDetail'
 import CommentsList from './CommentsList'
 import NotFound from './NotFound'
-
 import sortBy from 'sort-by'
 
 import { bindActionCreators } from 'redux'

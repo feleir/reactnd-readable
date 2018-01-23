@@ -1,8 +1,21 @@
 import React from 'react'
-import {
-  FormGroup,
-  FormControl
-} from 'react-bootstrap'
+import TextField from 'material-ui/TextField';
+
+export const toolbarStyles = {
+    chip: {
+        margin: 4,
+    },
+    wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    firstIcon: {
+        marginLeft: 'auto'
+    },
+    toolbar: {
+        backgroundColor: 'transparent'
+    }
+}
 
 export function capitalize (str = '') {
     return typeof str !== 'string'
@@ -21,19 +34,18 @@ export function guid() {
 }
 
 export function renderField(field) {
-  const { meta: { touched, error } } = field;
-  const className = touched && error ? 'error': null;
+  const { meta: { error } } = field;
   
   return (
-      <FormGroup validationState={className}>
-          <label>{field.label}</label>
-          <FormControl
-              type="text"
-              {...field.input}
-          />
-          <div className="text-help">
-              {touched ? error : ''}
-          </div>
-      </FormGroup>
-  );
+      <div>
+        <TextField
+            hintText={field.label}
+            {...field.input}
+            errorText={error}
+            fullWidth={true}
+            multiLine={field.multiLine}
+            rows={field.rows}
+        />
+    </div>
+  )
 }

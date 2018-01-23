@@ -6,11 +6,10 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { logger } from 'redux-logger'
 import thunk from 'redux-thunk';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './App'
 import reducer from './reducers'
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/css/bootstrap-theme.css'
 import registerServiceWorker from './registerServiceWorker'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -24,7 +23,9 @@ const store = createStore(
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <App />
+            <MuiThemeProvider>
+                <App />
+            </MuiThemeProvider>
         </BrowserRouter>
     </Provider>, 
     document.getElementById('root'))
