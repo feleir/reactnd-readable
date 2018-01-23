@@ -10,3 +10,7 @@ form {
 .form-buttons {
   text-align: center;
 }
+
+.container {
+  padding: 10px 10px;
+}
